@@ -120,7 +120,7 @@ const App = () => {
     }
   };
 
-  const displayTeam =  team.length === 0 ? 'Pick some team members!' : 
+  const displayTeam = team.length === 0 ? ('Pick some team members!') : ( 
        team.map( teamMember => 
         <li key={teamMember.id}>
         <h2>Team Member:</h2>
@@ -130,13 +130,24 @@ const App = () => {
         <p>Strength: {teamMember.strength}</p>
         <p>Agility: {teamMember.agility}</p>
         </li>
-       );
+       ));
+  
+  
+  let totalStrength = team.length === 0 ? (0) : (
+    team.reduce ( (acc, teamMember) => acc + teamMember.strength, 0)
+  );
+
+  let totalAgility = team.length === 0 ? (0) : (
+    team.reduce ( (acc, teamMember) => acc + teamMember.agility, 0)
+  );
 
   return (
     <>
       <h2>Money: {money}</h2>
       <ul>{ zombieFighterList }</ul>
       <ul>{ displayTeam } </ul>
+      <h2>Total Team Strength: { totalStrength }</h2>
+      <h2>Total Team Agility: { totalAgility }</h2>
     </>
   );
 };
