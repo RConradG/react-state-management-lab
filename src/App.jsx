@@ -88,6 +88,16 @@ const App = () => {
     },
   ]);
 
+  let totalStrength =
+    team.length === 0
+      ? 0
+      : team.reduce((acc, teamMember) => acc + teamMember.strength, 0);
+
+  let totalAgility =
+    team.length === 0
+      ? 0
+      : team.reduce((acc, teamMember) => acc + teamMember.agility, 0);
+
   const zombieFighterList = zombieFighters.map((zombieFighter) => (
     <li key={zombieFighter.id}>
       <p>{zombieFighter.img}</p>
@@ -101,13 +111,12 @@ const App = () => {
 
   const handleAddFighter = (newZombieFighter) => {
     if (newZombieFighter.price > money) {
-      console.log('Not Enough Money');      
+      console.log("Not Enough Money");
     } else {
       const newMoneyBalance = money - newZombieFighter.price;
-      
+
       setMoney(newMoneyBalance);
-      console.log(newMoneyBalance);
-      
+
       setTeam([...team, newZombieFighter]);
 
       // removes newZombieFighter from current zombieFighter list
@@ -120,35 +129,45 @@ const App = () => {
     }
   };
 
-  const displayTeam = team.length === 0 ? ('Pick some team members!') : ( 
-       team.map( teamMember => 
-        <li key={teamMember.id}>
-        <h2>Team Member:</h2>
-        <p>{teamMember.img}</p>
-        <p>Name: {teamMember.name}</p>
-        <p>Price: {teamMember.price}</p>
-        <p>Strength: {teamMember.strength}</p>
-        <p>Agility: {teamMember.agility}</p>
-        <button>Remove</button>
-        </li>
-       ));
-  
-  
-  let totalStrength = team.length === 0 ? (0) : (
-    team.reduce( (acc, teamMember) => acc + teamMember.strength, 0)
-  );
+  const handleRemoveFighter = (fighterToBeRemoved) => {
+    const newMoneyBalance = money + fighterToBeRemoved.price;
+    setMoney(newMoneyBalance);
+    totalAgility -= fighterToBeRemoved.agility;
+    totalStrength -= fighterToBeRemoved.price;
 
-  let totalAgility = team.length === 0 ? (0) : (
-    team.reduce( (acc, teamMember) => acc + teamMember.agility, 0)
-  );
+    const updatedTeamList = team.filter(
+      (teamMember) => teamMember.id !== fighterToBeRemoved.id 
+    );
+    setTeam(updatedTeamList);
+
+    setZombieFighters([...zombieFighters, fighterToBeRemoved]);
+  };
+
+  const displayTeam =
+    team.length === 0
+      ? "Pick some team members!"
+      : team.map((teamMember) => (
+          <li key={teamMember.id}>
+            <p>{teamMember.img}</p>
+            <p>Name: {teamMember.name}</p>
+            <p>Price: {teamMember.price}</p>
+            <p>Strength: {teamMember.strength}</p>
+            <p>Agility: {teamMember.agility}</p>
+            <button onClick={() => handleRemoveFighter(teamMember)}>Remove</button>
+          </li>
+        ));
+
 
   return (
     <>
+      <h1>Zombie Fighters</h1>
       <h2>Money: {money}</h2>
-      <ul>{ zombieFighterList }</ul>
-      <ul>{ displayTeam } </ul>
-      <h2>Total Team Strength: { totalStrength }</h2>
-      <h2>Total Team Agility: { totalAgility }</h2>
+      <h2>Total Team Strength: {totalStrength}</h2>
+      <h2>Total Team Agility: {totalAgility}</h2>
+      <h2>Team:</h2>
+      <ul>{displayTeam} </ul>
+      <h2>Fighters:</h2>
+      <ul>{zombieFighterList}</ul>
     </>
   );
 };
