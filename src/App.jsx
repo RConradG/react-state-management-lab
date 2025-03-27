@@ -129,16 +129,17 @@ const App = () => {
         <p>Price: {teamMember.price}</p>
         <p>Strength: {teamMember.strength}</p>
         <p>Agility: {teamMember.agility}</p>
+        <button>Remove</button>
         </li>
        ));
   
   
   let totalStrength = team.length === 0 ? (0) : (
-    team.reduce ( (acc, teamMember) => acc + teamMember.strength, 0)
+    team.reduce( (acc, teamMember) => acc + teamMember.strength, 0)
   );
 
   let totalAgility = team.length === 0 ? (0) : (
-    team.reduce ( (acc, teamMember) => acc + teamMember.agility, 0)
+    team.reduce( (acc, teamMember) => acc + teamMember.agility, 0)
   );
 
   return (
